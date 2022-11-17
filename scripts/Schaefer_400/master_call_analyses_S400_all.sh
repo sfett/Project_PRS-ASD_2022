@@ -79,23 +79,22 @@ template_grad_path="${serena_dir}/HCP/Schaefer_400/" # path to dataset
 
 ## Apply site harmonization 
 
-d_gradient = 400 # dimension of gradient
+d_gradient=400 # dimension of gradient
 
 # define covariates to input in model
 # string must be same as it is written in column name in demographic file. 
 
 
 # for continuous based variables
-continuous_covar1 = "interview_age"
-continuous_covar2 = "Pt_0.1" 
-
+continuous_covar1="interview_age"
+continuous_covar2="Pt_0.1" 
 
 # for categorical variables
-categorical_covar3 = "sex"
+categorical_covar3="sex"
 
 
 # the variable representing site to harmonize
-batch_covar4 = "mri_info_manufacturer" 
+batch_covar4="mri_info_manufacturer" 
 
 python gradient_site_harmonization_S400.py $subjects_file $output_grad_pth $template $grad_fname $continuous_covar1 $continuous_covar2 $categorical_covar3 $batch_covar4 $kernel $dataset
 
