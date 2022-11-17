@@ -4,11 +4,11 @@
 
 """
 
-Nov 15, 2022. @author: serenafett 
+Nov 15, 2022. @author: sfett 
 
 
 This script performs the harmonization of multi-site imaging data 
-with neuroComBat. 
+using neuroComBat. 
 
 
 Inputs: 
@@ -18,7 +18,7 @@ Inputs:
     
 Outputs:
     
-    * The nth  gradient for every subject after harmonization (.pickle)
+    * The nth  gradient for all subjects after harmonization (.pickle)
         (gradient dimension, n subjects)
      
     
@@ -26,15 +26,10 @@ This script requires that `neuroCombat`--and all its necessary packages--be
 installed within the Python environment. 
 (See: https://github.com/Jfortin1/neuroCombat)
 
-
-This script is to be called from an external bash script (.sh) where all 
+Note: This script is to be called from an external bash script (.sh) where all 
 dataset specific paths and inputs are to be already defined. 
 
 """
-
-
-
-# coding: utf-8
 
 from neuroCombat import neuroCombat
 import pandas as pd
@@ -42,112 +37,135 @@ import numpy as np
 import pickle
 import seaborn as sns
 import matplotlib.pyplot as plt
+import sys 
 
 
-# load dataframe of subjects
-df = pd.read_csv("/data/mica1/03_projects/serena/scripts/ABIDE/abide_func_fn_abideI.csv")
-df = df.loc[df['Func_MeanFD'] < 0.3]
-df = df[["ID", "Group", "Site", "Age"]]
-df.reset_index(inplace=True, drop=True)
+# Call input variables from bash script
 
-# create empty array 
-sub = len(df.index)
-data1 = np.zeros((9116,sub))
-data2 = np.zeros((9116,sub))
-data3 = np.zeros((9116,sub))
+# Gradient specifics
+df = sys.argv[1] 
+d_grad = sys.argv[2]
+grad_path = sys.argv[3]
+alignment = sys.argv[4]
+grad_fname = sys.argv[5] 
 
 
-root_path = '/data/mica2/ABIDE/Outputs/RSFC_gradients/Conte69_5k/cosine/'
+# for neuroCombat
+# for continuous based variables
+continuous_covar1 = sys.argv[6]
+continuous_covar2 = sys.argv[7]
+
+# for categorical variables
+categorical_covar3 = sys.argv[8]
+
+# the variable representing site to harmonize
+batch_covar4 = sys.argv[9]
+
+# output details
+kernel = sys.argv[10]
+dataset = sys.argv[11]
+
+
+# create empty arrays
+sub = len(df.index) # number of subjects in the file
+# for our analyses, only care about first three gradients 
+gradient1 = np.zeros((int(d_grad), sub))
+gradient2 = np.zeros((int(d_grad), sub))
+gradient3 = np.zeros((int(d_grad), sub))
+
 
 for index,rw in df.iterrows():
 
     sid = str(rw.ID)
     
-    sub_path = root_path + 'sub-' + sid + "_gm_aligned_hcp_cosine.pickle"
+    
+    sub_path = grad_path + sid + alignment + grad_fname + ".pickle"
     
     # load gradient
     file_to_read = open(sub_path, "rb")
-    gm_ASD = pickle.load(file_to_read)
+    gm = pickle.load(file_to_read)
     
+    if alignment is not None: 
+        
+        key = "aligned_"
+    
+    else:
+        key = "gradients_"
+        
     # extract specific gradients
-    first_g = (gm_ASD.aligned_[:,0])
-    second_g = (gm_ASD.aligned_[:,1])
-    third_g = (gm_ASD.aligned_[:,2])
+    first_g = (("gm." + key)[:,1])
+    second_g = (("gm." + key)[:,2])
+    third_g = (("gm." + key)[:,3])
     
     # add to array
-    data1[:,index]= first_g
-    data2[:,index]= second_g
-    data3[:,index]= third_g
+    gradient1[:,index]= first_g
+    gradient2[:,index]= second_g
+    gradient3[:,index]= third_g
 
 
-print(data1.shape)
-print(data2.shape)
-print(data3.shape)
+print(gradient1.shape)
+print(gradient2.shape)
+print(gradient3.shape)
 
 
 ## NEUROCOMBAT SITE HARMONIZATION
 
 # Specifying all the covariates
-covars = df[['Age','Site', "Group"]]
+covars = df[[continuous_covar1, continuous_covar2, categorical_covar3, batch_covar4]]
 
-# To specify names of the variables that are categorical:
-categorical_cols = ["Group"]
+# specify the variables that are categorical:
+categorical_cols = [categorical_covar3]
 
-# To specify continuous variables 
-continuous_cols = ['Age']
+# specify continuous variables 
+continuous_cols = [continuous_covar1,continuous_covar2]
 
-# To specify the name of the variable that encodes for the scanner/batch covariate:
-batch_col = 'Site'
-
-covars
-covars.to_csv('/data/mica1/03_projects/serena/ABIDE1/ABIDE_n211.csv')
+# specify the variable that encodes for the scanner/batch covariate:
+batch_col = [batch_covar4]
 
 
 # Harmonize FIRST gradient
-data = data1 
+data = gradient1 
 data_combat = neuroCombat(dat=data,
     covars=covars,
     batch_col=batch_col,
     categorical_cols=categorical_cols, continuous_cols=continuous_cols)["data"]
 # save harmonized first gradient
-np.savez_compressed(root_path + "harmonized_first_cosine_gradient_ABIDE_n211.npz", data_combat=data_combat) 
-
-
-
-# Harmonize SECOND gradinet
-data = data2
+np.savez_compressed(grad_path + \
+                    "harmonized_first" + kernel + "_gradient_" + dataset + "n" + sub + ".npz", \
+                    data_combat=data_combat)
+                  
+    
+# Harmonize SECOND gradient
+data = gradient2
 data_combat = neuroCombat(dat=data,
     covars=covars,
     batch_col=batch_col,
     categorical_cols=categorical_cols, continuous_cols=continuous_cols)["data"]
 # save harmonized second gradinet
-np.savez_compressed(root_path + "harmonized_second_cosine_gradient_ABIDE_n211.npz", data_combat=data_combat) 
-
-
-
-# Harmonize THIRD gradinet
-data = data3
-data_combat = neuroCombat(dat=data3,
+np.savez_compressed(grad_path + \
+                    "harmonized_second" + kernel + "_gradient_" + dataset + "n" + sub + ".npz", \
+                    data_combat=data_combat)
+                    
+    
+# Harmonize THIRD gradient
+data = gradient3
+data_combat = neuroCombat(dat=data,
     covars=covars,
     batch_col=batch_col,
     categorical_cols=categorical_cols, continuous_cols=continuous_cols)["data"]
 # save harmonized third gradinet
-np.savez_compressed(root_path + "harmonized_third_cosine_gradient_ABIDE_n211.npz", data_combat=data_combat) 
-
-
+np.savez_compressed(grad_path + \
+                    "harmonized_first" + kernel + "_gradient_" + dataset + "n" + sub + ".npz", \
+                    data_combat=data_combat)
+        
+    
 ## to visualize data 
-#(before harmonization)
+##before harmonization and after harmonization
 
-print(np.min(data))
-print(np.min(data_combat))
-
-plt.figure()
-
-plt.subplot(121)
-heat_map = sns.heatmap(data, vmin=-0.2, vmax=0.2)
-
-plt.subplot(122)
-heat_map2 = sns.heatmap(data_combat, vmin=-0.2, vmax=0.2)
-
-plt.show()
+# plt.figure()
+# plt.subplot(121)
+# heat_map = sns.heatmap(data, vmin=-0.2, vmax=0.2)
+# plt.subplot(122)
+# heat_map2 = sns.heatmap(data_combat, vmin=-0.2, vmax=0.2)
+# plt.show()
 
