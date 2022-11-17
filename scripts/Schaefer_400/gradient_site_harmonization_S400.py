@@ -158,8 +158,6 @@ np.savez_compressed(grad_path + \
                     "harmonized_first" + kernel + "_gradient_" + dataset + "n" + sub + ".npz", \
                     data_combat=data_combat)
        
-
-data_testing = "checking if update worked" 
     
 ## to visualize data 
 ##before harmonization and after harmonization
