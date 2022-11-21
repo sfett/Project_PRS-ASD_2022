@@ -8,7 +8,7 @@ The scripts in this repository are divided into two categories based on your cho
 
 * **Conte69_5k:** Data in vertex-wise space. Surface derived from FreeSurfer segmentation. For the sake of this project, working in 5k resolution per hemisphere. 
 
-* **Schaefer_400:** Data in parcellation space. Reduced dimensionality of high-resolution neuroimaging data by merging voxels into 400 parcels, or brain regions. 
+* **Schaefer_400:** Data in parcellation space. Reduced dimensionality of high-resolution neuroimaging data by merging voxels into 400 parcels. 
 
 ## Getting Started
 
