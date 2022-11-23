@@ -1,79 +1,85 @@
 
 #!/bin/bash
 
+# Bash script for calling python functions for gradient analyses
+# Working in Conte69-5k space 
 
-# define some initial general variables 
-
+#root directory 
 serena_dir="/data/mica1/03_projects/serena/"
-surf_mat="/data/mica1/03_projects/valeria/micasoft/parcellations/conte69_10k/conte69_10k.mat"
-surf_vtp=$serena_dir+='conte69_5k_new.vtp'
-kernel="normalized_angle"
-alignment="hcp_procrustes_aligned"
 
+echo "Hello, which dataset are you using (abcd, abide or ping)?" 
+read dataset
+echo "You are using the $dataset dataset"
 
-# define which dataset first 
+# define your dataset specific inputs
 
-dataset="abide"
+if [[ "$dataset" == "abide" ]] ; then 
 
-if $dataset="abide"
-then
+	echo "add abide inputs" 
 
-	subjects_file=$serena_dir+='/ABIDE1/ABIDE_n211.csv'
+	#subjs_file="${serena_dir}/ABIDE1/ABIDE_n211.csv"
+	#ts_file=	
 
-	ts_file="_s6_atlasroi_5k_fs_LR.func.gii"
+	#input_dir_fc=
+	#output_grad_pth=
 
-	grad_fname="ABIDE'+=$alignment+=$kernel"
+elif [[ "$dataset" == "ping" ]] ; then 
 
-	input_dir="/data/mica2/ABIDE/Outputs/RSFC/timecourses_5k/"
+	# subjects
+	root_path="/data/mica3/BIDS_PING/derivatives/micapipe/"
+	subjects_file="/data/mica1/03_projects/serena/scripts/PING/PING_final_cohort.csv"
+	
+	# resting-state functional connectivity 
+	input_dir_fc="${root_path}/RSFC/"
+	fc_fname="_ses-01_rsfmri_space-conte69-10k_FC.npz"
+	fc_label="FCz" 
 
-	output_dir_fc="/data/mica2/ABIDE/Outputs/RSFC/Conte69_5k"
+	# gradients
+	output_dir_grads="${serena_dir}/RSFC_gradients/PING_gradients/cosine/"
+	grad_fname="_gm_Conte69_dm_cosine_0.9"
+	kernel='cosine'
 
-elif $dataset="ping"
-then
-	#ts_file = ### 
-	#subjects_file = ###
+elif [[ "$dataset" == "abcd" ]] ; then 
 
+	# subjects
+	root_path="/data/mica2/ABCD/imaging/"
+	subjects_file="${root_path}/ABCD_subjects_PRS_rsfMRI.txt"
+	
+	# resting-state functional connectivity 
+	input_dir_fc="${root_path}/RSFC/"
+	fc_fname="_rest_mc_skip_residc_interp_FDRMS0.3_DVARS50_bp_0.009_0.08_fs6_sm6_all2all.mat"
+	fc_label="corr_mat"
 
-elif $dataset="abcd"
-then
-	#ts_file= 
-	#subjects_file= ####
+	# gradients
+	output_dir_grads="${root_path}/RSFC_gradients/Conte69/5k/"
+	grad_fname="_gm_Conte69_dm_na_0.9"
+	kernel='normalized_angle'
 
-fi (to end conditional statement) 
+	# demographic info for harmonization and linear model 
+	demo ="${root_path}/abcd_demog_w_gradients_noPRS.csv" # needs to be updated with all PRS thresholds 
 
+fi 
 
-# identify all the master python scripts 
+#1 Compute FC 
+python compute_FC.py $ts_file $input_dir $ouput_dir_fc $fc_file $subjects_file $surf_vtp $surf_mat 
 
-	# compute FC 
-	# compute template grad 
-	# compute individual grads from FC 
-	# compute average grads from FC 
-	# site harmonization on grads 
-	# linear models 
+#2. Compute template & individual gradients 
+template="hcp" # set to name of dataset or None if no alignment to be performed. 
+template_grad_path="${serena_dir}/HCP/Conte69_32k/" # path to dataset
+python create_individual_gradients.py $subjects_file $input_dir_fc $fc_fname $fc_label #$output_dir_grads $grad_fname $template $template_grad_path
 
+#3. Apply site harmonization 
+d_gradient=10000 # dimension of gradient
+# define covariates to input in model, string must be as written in column name of demographic file. 
 
-# Compute FC 
+# for continuous based variables
+continuous_covar1="interview_age"
+continuous_covar2="Pt_0.1" 
 
-#python compute_FC.py $ts_file $input_dir $ouput_dir_fc $fc_file $subjects_file $surf_vtp $surf_mat 
+# for categorical variables
+categorical_covar3="sex"
 
+# using scanner serial number to harmonize data
+batch_covar4="mri_info_manufacturer" 
+python gradient_site_harmonization.py $subjects_file $output_grad_pth $template $grad_fname $continuous_covar1 $continuous_covar2 $categorical_covar3 $batch_covar4 $kernel $dataset
 
-# Compute template gradient 
-
-fc_file="/data/mica1/03_projects/serena/scripts/HCP_mean_connectivity_n217_v2.npz"
-output_dir_temp="/data/mica1/03_projects/serena/HCP/"
-output_name = ##
-
-python compute_template_gradient.py $fc_file $surf_mat $kernel $output_dir_temp $output_name 
-
-
-# Compute individual gradients 
-
-template_grad="/data/mica2/ABIDE/Outputs/RSFC_gradients/Conte69_5k/cosine/HCP_N217_4ses_mean_gradient_cosine.pickle"
-input_dir_fc="/data/mica2/ABIDE/Outputs/RSFC/Conte69_5k/"
-output_grad_pth="/data/mica2/ABIDE/Outputs/RSFC_gradients/Conte69_5k/cosine/"
-
-
-python create_individual_gradients.py $subjects_file $template_grad $input_dir_fc $output_dir_fc $ts_file $kernel $grad_name
-
-
-done
