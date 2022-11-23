@@ -1,10 +1,11 @@
 # PRS-ASD Project 2022
 
-Project Objective: Examining the effects of genetic risk for autism spectrum disorder (via proxy of polygenic risk score) on functional connectivity. 
+This project is a continuation of my undergraduate thesis that aims to examine the effects of genetic risk for autism (via proxy of polygenic risk score) on functional connectivity. Computational methods were used to probe the brain on multiple scales inlcuding: fMRI timeseries, functional connectomes and functional gradients. 
 
 ## Description
 
-The scripts in this repository are divided into two categories based on your chosen surface space resolution. 
+Scripts in this repository include building functional connectomes and gradients, harmonizing site data and plotting onto hemispheres. 
+Scripts are divided into two categories based on your chosen surface space resolution. 
 
 * **Conte69_5k:** Data in vertex-wise space. Surface derived from FreeSurfer segmentation. For the sake of this project, working in 5k resolution per hemisphere. 
 
@@ -14,19 +15,18 @@ The scripts in this repository are divided into two categories based on your cho
 
 ### Dependencies
 
-* The scripts utilize MICA's in-house toolboxes BrainSpace and BrainStat, and all their subsequent required packages must be installed in the python environment before analyses. 
-* See installation guides here: [BrainSpace](https://brainspace.readthedocs.io/en/latest/pages/install.html#python-installation), [BrainStat]( https://brainstat.readthedocs.io/en/master/generic/install.html#python-installation)
-
+* The scripts utilize MICA's in-house toolboxes BrainSpace and BrainStat, as well as neuroCombat.
+* All their subsequent required packages must be installed in the python environment before analyses. 
+* See installation guides here: [BrainSpace](https://brainspace.readthedocs.io/en/latest/pages/install.html#python-installation), [BrainStat]( https://brainstat.readthedocs.io/en/master/generic/install.html#python-installation), [neuroCombat](https://github.com/Jfortin1/neuroCombat)
 
 ### Code format
 
-* All python scripts are designed to be called from a BASH script `master_call_analyses.sh`, where dataset specific inputs are to be defined. 
+* All python scripts are designed to be called from a BASH script `master_call_analyses.sh`, where dataset specific inputs (i.e., demographic files and paths) are to be defined. 
 
 
 ## Authors
 
 Serena Fett   
 [serena.fett@mail.mcgill.ca](serena.fett@mail.mcgill.ca)
-
 
 
