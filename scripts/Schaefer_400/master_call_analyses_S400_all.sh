@@ -4,12 +4,11 @@
 # Bash script for calling python functions for gradient analyses
 # Working in Schaefer 400 parcellation space
 
+#root directory 
 serena_dir="/data/mica1/03_projects/serena/"
 
 echo "Hello, which dataset are you using (abcd, abide or ping)?" 
-
 read dataset
-
 echo "You are using the $dataset dataset"
 
 # define your dataset specific inputs
