@@ -1,23 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-""" 
-
-This script plots gradients onto hemispheres for visualization purposes. 
-Also calculates the percentage of variance explained within the connectome by each gradient. 
-
-Inputs: 
-Uses BrainSpace readily available surface data. 
-
-Outputs: 
-python file of visualized hemispheres. 
-
-This script requires that `BrainSpace`--and all its necessary packages--be
-installed within the Python environment. 
-(See: https://brainspace.readthedocs.io/en/latest/)
-
-""" 
-
 
 #%% Plot hcp gradient in S400
 
