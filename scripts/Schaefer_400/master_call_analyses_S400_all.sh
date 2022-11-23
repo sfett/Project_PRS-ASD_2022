@@ -56,12 +56,12 @@ elif [[ "$dataset" == "abcd" ]] ; then
 fi 
 
 #1 Compute FC 
-#python compute_FC.py $ts_file $input_dir $ouput_dir_fc $fc_file $subjects_file $surf_vtp $surf_mat 
+python compute_FC.py $ts_file $input_dir $ouput_dir_fc $fc_file $subjects_file $surf_vtp $surf_mat 
 
 #2. Compute template & individual gradients 
 template="hcp" # set to name of dataset or None if no alignment to be performed. 
 template_grad_path="${serena_dir}/HCP/Schaefer_400/" # path to dataset
-#python create_individual_gradients_Schaefer400.py $subjects_file $input_dir_fc $fc_fname $fc_label #$output_dir_grads $grad_fname $template $template_grad_path
+python create_individual_gradients_Schaefer400.py $subjects_file $input_dir_fc $fc_fname $fc_label #$output_dir_grads $grad_fname $template $template_grad_path
 
 #3. Apply site harmonization 
 d_gradient=400 # dimension of gradient
@@ -76,5 +76,5 @@ categorical_covar3="sex"
 
 # using scanner serial number to harmonize data
 batch_covar4="mri_info_manufacturer" 
-#python gradient_site_harmonization_S400.py $subjects_file $output_grad_pth $template $grad_fname $continuous_covar1 $continuous_covar2 $categorical_covar3 $batch_covar4 $kernel $dataset
+python gradient_site_harmonization_S400.py $subjects_file $output_grad_pth $template $grad_fname $continuous_covar1 $continuous_covar2 $categorical_covar3 $batch_covar4 $kernel $dataset
 
