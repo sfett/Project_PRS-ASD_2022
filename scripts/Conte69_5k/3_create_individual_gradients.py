@@ -1,6 +1,33 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+"""
+Oct 6, 2022. @author: serenafett 
+
+This script computes individual gradients from functional connectivity matrices of 10k x 10k resolution. 
+Option is provided for gradients to be aligned to a reference gradient. 
+
+Inputs: 
+    
+    * List of subjects ID (.csv)
+    * Individual functional connectivity matrices (.npz)
+    
+Outputs:
+    
+    * The 10 first gradients in 400 x 400 parcellation space (.pickle)
+    
+    
+This script requires that `BrainSpace`--and all its necessary packages--be
+installed within the Python environment. 
+(See: https://brainspace.readthedocs.io/en/latest/)
+
+
+This scripted is to be called from a bash script (.sh) where all dataset
+specific paths and inputs are to be already defined. 
+
+"""
+
+
 import os
 import pickle
 import numpy as np
@@ -10,6 +37,8 @@ import sys
 from brainspace.mesh.mesh_io import read_surface
 from brainspace.gradient import GradientMaps
 
+
+# Call variables from bash script
 subjects_file = sys.argv[1]
 template_grad = sys.argv[2]
 input_dir = sys.argv[3]
@@ -37,7 +66,7 @@ for index,rw in df.iterrows():
     sub_path = input_dir + sid + ts_file
     
     data = np.load(sub_path)
-    FCz = data['FCz']
+    FCz = data['FCz'] # load Fisher-Z data
     
     # compute gradient
     gm = GradientMaps(n_components=10,approach ='dm', kernel=kernel, alignment='procrustes', random_state=0)
@@ -48,3 +77,5 @@ for index,rw in df.iterrows():
     pickle.dump(gm, file)
     file.close()
 
+    
+    
