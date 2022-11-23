@@ -28,24 +28,5 @@ The scripts in this repository are divided into two categories based on your cho
 Serena Fett   
 [serena.fett@mail.mcgill.ca](serena.fett@mail.mcgill.ca)
 
-## Acknowledgments
 
-
-### BrainSpace
-
-Code available here: [BrainSpace ](https://github.com/MICA-MNI/BrainSpace)
-
-Vos de Wael, R., Benkarim, O., Paquola, C. et al. BrainSpace: a toolbox for the analysis of macroscale gradients in neuroimaging and connectomics datasets. Commun Biol 3, 103 (2020). https://doi.org/10.1038/s42003-020-0794-7
-
-### BrainStat
-
-Code available here:  [BrainStat ](https://github.com/MICA-MNI/BrainStat)
-
-Vos de Wael, R. V., Bayrak, Ş., Benkarim, O. et al. BrainStat: A toolbox for brain-wide statistics and Multimodal Feature Associations. (2022) https://doi.org/10.1101/2022.01.18.476795 
-
-### neuroCombat 
-
-Code available here [neuroCombat](https://github.com/Jfortin1/neuroCombat)
-
-Fortin, J. P., Cullen, N., Sheline, Y. I. et al. (2018). Harmonization of cortical thickness measurements across scanners and sites. NeuroImage, 167, 104–120. https://doi.org/10.1016/j.neuroimage.2017.11.024
 
