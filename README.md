@@ -10,7 +10,7 @@ The scripts in this repository are divided into two categories based on your cho
 
 * **Schaefer_400:** Data in parcellation space. Reduced dimensionality of high-resolution neuroimaging data by merging voxels into 400 parcels. 
 
-## Getting Started
+## Specifics
 
 ### Dependencies
 
