@@ -1,12 +1,10 @@
-%% Downsample  timeseries from 32k to conte69 5k
-
-clear
-clc
+%% Script used to downsample timeseries data from 32k resolution to 5k (conte69) 
+  
 
 root_path = '/data/mica3/BIDS_PING/derivatives/micapipe/' ;
 
 %load subject list
-subj = '/data_/mica1/03_projects/serena/scripts/PING/PING_final_cohort.csv';
+subj = %uplaod csv file of subjects
 S = readtable(subj);
 sID = S.Subjects;
 
@@ -19,7 +17,6 @@ C69_10k = struct('coord', coord, 'tri', int32(tri));
 downSampIdx = idx;
 
 g = gifti('/data_/mica1/03_projects/valeria/micasoft/parcellations/conte69_10k/conte69_10k.surf.gii');
-
 
 for sub = 1:length(sID)
     sub_path = fullfile(root_path,['sub-' sID{sub}], 'ses-01','func','surfaces');
