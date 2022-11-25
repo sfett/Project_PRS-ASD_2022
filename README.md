@@ -1,6 +1,6 @@
 # PRS-ASD Project 2022
 
-This project is a continuation of my undergraduate thesis that aims to examine the effects of genetic risk for autism (via proxy of polygenic risk score) on functional connectivity. Computational methods were used to probe the brain on multiple scales inlcuding: fMRI timeseries, functional connectomes and functional gradients. 
+This project aims to examine the effects of genetic risk for autism (via proxy of polygenic risk score) on functional connectivity. Computational methods were used to probe the brain on multiple scales inlcuding: fMRI timeseries, functional connectomes and functional gradients. 
 
 ## Description
 
