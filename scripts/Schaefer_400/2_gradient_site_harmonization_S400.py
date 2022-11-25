@@ -51,6 +51,7 @@ grad_fname = sys.argv[5]
 
 
 # for neuroCombat
+
 # for continuous based variables
 continuous_covar1 = sys.argv[6]
 continuous_covar2 = sys.argv[7]
@@ -77,7 +78,6 @@ gradient3 = np.zeros((int(d_grad), sub))
 for index,rw in df.iterrows():
 
     sid = str(rw.ID)
-    
     
     sub_path = grad_path + sid + alignment + grad_fname + ".pickle"
     
@@ -145,8 +145,7 @@ data_combat = neuroCombat(dat=data,
 np.savez_compressed(grad_path + \
                     "harmonized_second" + kernel + "_gradient_" + dataset + "n" + sub + ".npz", \
                     data_combat=data_combat)
-                    
-    
+                
 # Harmonize THIRD gradient
 data = gradient3
 data_combat = neuroCombat(dat=data,
@@ -158,14 +157,15 @@ np.savez_compressed(grad_path + \
                     "harmonized_first" + kernel + "_gradient_" + dataset + "n" + sub + ".npz", \
                     data_combat=data_combat)
        
-    
 ## to visualize data 
 ##before harmonization and after harmonization
 
-# plt.figure()
-# plt.subplot(121)
-# heat_map = sns.heatmap(data, vmin=-0.2, vmax=0.2)
-# plt.subplot(122)
-# heat_map2 = sns.heatmap(data_combat, vmin=-0.2, vmax=0.2)
-# plt.show()
+plt.figure()
+plt.subplot(121)
+heat_map = sns.heatmap(data, vmin=-0.2, vmax=0.2)
+plt.subplot(122)
+heat_map2 = sns.heatmap(data_combat, vmin=-0.2, vmax=0.2)
+plt.show()
+
+
 
