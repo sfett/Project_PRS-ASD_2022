@@ -1,6 +1,6 @@
-%% Script used to downsample timeseries data from 32k resolution to 5k (conte69) 
+%% Script used to downsample timeseries data from higher resolution (i.e., 32k) to lower (i.e.,5k) in conte69 space. 
   
-
+  
 root_path = '/data/mica3/BIDS_PING/derivatives/micapipe/' ;
 
 %load subject list
