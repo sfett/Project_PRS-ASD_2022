@@ -33,7 +33,7 @@ from brainspace.mesh.mesh_io import read_surface, write_surface
 from brainspace.mesh.mesh_creation import build_polydata
 
 # Load surfaces
-gen_path = '/Users/serena/Documents/MICA/Project_ASD/data/general/'
+gen_path = '/Users/'
 s5 = read_surface(gen_path + '/conte69_5k_new.vtp')
 s10 = read_surface(gen_path + '/conte_10k_fixed.vtp')
 
@@ -44,8 +44,6 @@ for array_name in s10.PointData.keys():
 
     
 # Load mask in 5k resolution
-# Indicates which vertices should be mapped
-
 mask_file = sio.loadmat(gen_path + '/conte69_10k.mat')
 mask = mask_file['mask']
 mask_bin = (mask==1) # creates boolean mask
@@ -76,12 +74,10 @@ for array_name in s5.PointData.keys():
     
 
 # Plot ABIDE ASD gradient
-
 grads_ASD = []
+abide_path = '/Users/'
 
-abide_path = '/Users/serena/Documents/MICA/Project_ASD/data/abide'
-
-file_ASD = open(abide_path + '/cosine/ABIDE_ASD_mean_gradient_cosine.pickle', "rb")
+file_ASD = open(abide_path + '/ABIDE_ASD_mean_gradient_cosine.pickle', "rb")
 gm_ASD = pickle.load(file_ASD)
 
 # Gradient 1
