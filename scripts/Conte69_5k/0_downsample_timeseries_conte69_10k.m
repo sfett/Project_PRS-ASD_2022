@@ -1,6 +1,6 @@
 %% This MATLAB script is used to downsample timeseries data from higher resolution (i.e., 32k) to lower (i.e.,5k) in conte69 space. 
 %% Downsampling timeseries data is often used for purposes of computational efficiency, especially with large datasets. 
-%% Corresponding surface files can be found in the /surfaces directory of this repository. 
+%%  Corresponding surface files can be found in the /surfaces directory of this repository. 
 
 root_path = '/data/mica3/BIDS_PING/derivatives/micapipe/' ;
 surf_path = '/github/Project_PRS-ASD_2022/surfaces/' ; 
