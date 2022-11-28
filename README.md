@@ -29,15 +29,13 @@ Scripts in this repository include building functional connectomes and gradients
 
 ### Dependencies
 
-* The scripts utilize MICA's in-house toolboxes BrainSpace and BrainStat, and all their subsequent required packages must be installed in the python environment before analyses. 
+* The scripts utilize MICA's in-house toolboxes BrainSpace and BrainStat, and all their subsequent required packages must be installed in the python environment beforehand. 
 * See installation guides here: [BrainSpace](https://brainspace.readthedocs.io/en/latest/pages/install.html#python-installation), [BrainStat]( https://brainstat.readthedocs.io/en/master/generic/install.html#python-installation)
-
 
 ### Code format
 
 * All python scripts are designed to be called from an external BASH script, where dataset specific inputs are to be defined. 
 * Written in Python 3.8
-
 
 ## Authors
 
