@@ -12,12 +12,12 @@ Scripts in this repository include building functional connectomes and gradients
 
 **/scripts** is divided into two categories based on your chosen surface space resolution. 
 
-####*Schaefer 400*
+####Schaefer 400
 * Data in parcellation space.
 * Reduced dimensionality of high-resolution neuroimaging data by averaging voxels into 400 parcels, or brain regions. 
 * See: [Schaefer et al., 2018](https://pubmed.ncbi.nlm.nih.gov/28981612/)
 
-####*Conte69 (5k)*
+####Conte69 (5k)
 
 * Data in vertex-wise space.
 * Conte69 (a.k.a fsLR) is a surface-based atlas generated from 69 healthy adults registered to the fsLR surface mesh. 
