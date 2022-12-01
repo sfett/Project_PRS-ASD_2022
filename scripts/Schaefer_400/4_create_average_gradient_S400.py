@@ -35,10 +35,11 @@ from brainspace.gradient import GradientMaps
 # Define inputs 
 root_path = '/data/mica2/ABCD/imaging/'
 fc_path = root_path + 'RSFC/'
+fc_path_out = fc_path + 'average/'
 fc_label = 'corr_mat'
 fc_fname = '_rest_mc_skip_residc_interp_FDRMS0.3_DVARS50_bp_0.009_0.08_fs6_sm6_all2all.mat'
 template_grad = '/data/mica1/03_projects/serena/HCP/Schaefer_400/hcp_gm_Schaefer-400_dm_na_0.9.pickle'
-grad_path = root_path + '/RSFC_gradients/Schaefer_400/'
+grad_path = root_path + '/RSFC_gradients/Schaefer_400/average/'
 grad_fname="_gm_Schaefer-400_dm_na_0.9"
 average = 'ABCD_average_gradient_n2518_hcp_aligned'
 
@@ -62,7 +63,7 @@ for index,rw in df.iterrows():
     # remove subcortical parcels
     c = c[:400, :400]
    
-    print("Dimension of FC is " + str(c.shape) +"parcels")
+    #print("Dimension of FC is " + str(c.shape) +"parcels")
    
     # Fisher z transform, also replaces diagonal with value of 0s 
     c_z = np.arctanh(c)
@@ -78,7 +79,8 @@ print(c_all.shape)
 print(n_all)
 
 # save matrix within fc directory
-np.savez_compressed(fc_path, FC_all=c_all)   
+np.savez_compressed(fc_path_out, FC_all=c_all)   
+print("Saved average FC successfully")
 
 # if aligning, load template gradient
 file_to_read = open(template_grad, "rb")
@@ -92,4 +94,6 @@ gm.fit(c_all, sparsity=0.9, reference=gm_template.gradients_)
 file_gm = open(grad_path + average + grad_fname, 'wb') 
 pickle.dump(gm, file_gm)
 file_gm.close()
+
+print("saved average gradient successfully") 
 
